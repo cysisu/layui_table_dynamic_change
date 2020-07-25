@@ -10,6 +10,7 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
+<script src="layui/layui.js" charset="utf-8"></script> 
 <div class="">
 	 <div class="layui-row">
 		  <div class="layui-col-sm3" style="margin-left:30px;margin-top: 30px ">
@@ -36,12 +37,13 @@
   <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
-<script src="layui/layui.js" charset="utf-8"></script> 
+
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 --> 
 <script>
 layui.use(['tree', 'util','table'], function(){
   var tree = layui.tree;
   var table = layui.table;
+  var $=layui.$;
   layer = layui.layer
   ,util = layui.util
   
@@ -78,16 +80,16 @@ layui.use(['tree', 'util','table'], function(){
         }]
       },{
         title: '三级1-1-1'
-        ,id: 7
+        ,id: 101
         ,field: ''
         ,children: [{
           title: '四级1-1-1-1 可允许跳转'
-          ,id: 15
+          ,id: 102
           ,field: ''
         }]
       },{
         title: '三级1-1-2'
-        ,id: 8
+        ,id: 103
         ,field: ''
         ,children: [{
           title: '四级1-1-2-1'
@@ -101,17 +103,17 @@ layui.use(['tree', 'util','table'], function(){
       ,spread: true
       ,children: [{
         title: '三级1-2-1'
-        ,id: 9
+        ,id: 104
         ,field: ''
         ,disabled: true
       },{
         title: '三级1-2-2'
-        ,id: 10
+        ,id: 105
         ,field: ''
       }]
     },{
       title: '二级1-3'
-      ,id: 20
+      ,id: 19
       ,field: ''
       ,children: [{
         title: '三级1-3-1'
@@ -135,11 +137,11 @@ layui.use(['tree', 'util','table'], function(){
       ,spread: true
       ,children: [{
         title: '三级2-1-1'
-        ,id: 11
+        ,id: 1101
         ,field: ''
       },{
         title: '三级2-1-2'
-        ,id: 12
+        ,id: 121
         ,field: ''
       }]
     },{
@@ -148,11 +150,11 @@ layui.use(['tree', 'util','table'], function(){
       ,field: ''
       ,children: [{
         title: '三级2-2-1'
-        ,id: 13
+        ,id: 131
         ,field: ''
       },{
         title: '三级2-2-2'
-        ,id: 14
+        ,id: 141
         ,field: ''
         ,disabled: true
       }]
@@ -168,16 +170,16 @@ layui.use(['tree', 'util','table'], function(){
       ,fixed: true
       ,children: [{
         title: '三级3-1-1'
-        ,id: 18
+        ,id: 181
         ,field: ''
       },{
         title: '三级3-1-2'
-        ,id: 19
+        ,id: 191
         ,field: ''
       }]
     },{
       title: '二级3-2'
-      ,id: 27
+      ,id: 18
       ,field: ''
       ,children: [{
         title: '三级3-2-1'
@@ -207,31 +209,13 @@ layui.use(['tree', 'util','table'], function(){
     ,data: data
     //,skin: 'line' //表格风格
     ,even: true
+	,done:function(res,curr,count){
+		$("[data-field='checked']").css('display','none');
+		
+	}
     //,page: true //是否显示分页
     //,limits: [5, 7, 10]
     //,limit: 5 //每页默认显示的数量
-  });
-	
-  //监听行工具事件
-  table.on('tool(test)', function(obj){
-    var data = obj.data;
-    console.log(obj)
-    if(obj.event === 'del'){
-      layer.confirm('真的删除行么', function(index){r
-        obj.del();
-        layer.close(index);
-      });
-    } else if(obj.event === 'edit'){
-      layer.prompt({
-        formType: 2
-        ,value: data.email
-      }, function(value, index){
-        obj.update({
-          email: value
-        });
-        layer.close(index);
-      });
-    }
   });
  
   //基本演示
@@ -247,6 +231,12 @@ layui.use(['tree', 'util','table'], function(){
       layer.msg('状态：'+ obj.state + '<br>节点数据：' + JSON.stringify(data));
 	  table.reload('tbl_tree',{
 		  data:data
+		  ,done:function(){
+			  if(obj.data.id<20){
+				  $("[data-field='checked']").css('display','none');
+			  }
+			  console.log('reload');
+		  }
 	  });	
     }
   });
